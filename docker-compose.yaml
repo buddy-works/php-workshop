@@ -1,0 +1,51 @@
+version: '2.1'
+services:
+  db:
+    image: postgres:11-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    volumes:
+      - ./docker/postgres/database:/var/lib/postgresql/data:delegated
+      - ./docker/postgres/initdb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: "exit 0"
+      interval: 3s
+
+  php:
+    build: ./docker/php
+    expose:
+      - 9000
+    volumes:
+      - ./:${APP_ROOT}:cached
+      - ./var/cache:${APP_ROOT}/var/cache:delegated
+      - ./var/log:${APP_ROOT}/var/log:delegated
+      - ./vendor:${APP_ROOT}/vendor:delegated
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASS}@db:5432/${DB_NAME}
+    links:
+      - db
+    working_dir: ${APP_ROOT}
+    healthcheck:
+      test: "exit 0"
+      interval: 1s
+
+  nginx:
+    build: ./docker/nginx
+    ports:
+      - 80:80
+    depends_on:
+      php:
+        condition: service_healthy
+    links:
+      - php
+    volumes:
+      - ./docker/nginx/logs:/var/log/nginx:delegated
+    volumes_from:
+      - php
