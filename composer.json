@@ -47,6 +47,8 @@
         "symfony/symfony": "*"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.2",
+        "fzaninotto/faker": "^1.8",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",
@@ -85,6 +87,15 @@
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        }
+        },
+        "tests": [
+            "bin/phpunit"
+        ],
+        "tests-full": [
+            "bin/console cache:clear --env=test",
+            "bin/console d:s:d --force --full-database --env=test",
+            "bin/console d:s:u --force --env=test",
+            "@tests"
+        ]
     }
 }
