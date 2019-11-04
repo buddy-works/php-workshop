@@ -1,0 +1,5 @@
+doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%_test'
+        logging: false
+        profiling: false
