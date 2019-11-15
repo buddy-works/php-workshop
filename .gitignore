@@ -25,3 +25,6 @@ docker/postgres/database
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+
+.idea
