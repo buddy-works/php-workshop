@@ -26,4 +26,9 @@ RUN adduser -D -g '' www-data
 
 COPY php-fpm.conf /etc/php7/php-fpm.conf
 
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
+
+RUN composer install
+
 CMD ["php-fpm7", "-F"]
