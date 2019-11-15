@@ -2,7 +2,7 @@
 
 Demo project for participants of the CI/CD workshop
 
-## What will you learn?
+## What will you learn buddy?
 
  - [ ] ability to work as a team with a distributed code repository
  - [ ] integration of tools from the PHP environment (tests, static analysis, etc.) into the CI/CD server (Buddy.Works)
